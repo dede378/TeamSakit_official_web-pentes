@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:80"
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      APP_MODE: ${APP_MODE:-fixed}
+      LAB_ENABLED: ${LAB_ENABLED:-false}
+      LAB_USERNAME: ${LAB_USERNAME:-practice-user}
+      LAB_PASSWORD: ${LAB_PASSWORD:?Set LAB_PASSWORD in .env}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-teamsakit_lab}
+      DB_USERNAME: ${DB_USERNAME:-teamsakit_app}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-teamsakit_lab}
+      MYSQL_USER: ${DB_USERNAME:-teamsakit_app}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  mysql_data:
