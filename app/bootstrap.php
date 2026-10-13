@@ -3,9 +3,31 @@ declare(strict_types=1);
 
 session_start();
 
+/**
+ * Optional machine-local configuration.
+ * Docker/hosting environment variables take priority over this file.
+ * Copy config.local.example.php to config.local.php for KSWEB.
+ */
+function local_config(): array {
+    static $config = null;
+    if ($config === null) {
+        $file = __DIR__ . '/config.local.php';
+        $loaded = is_file($file) ? require $file : [];
+        $config = is_array($loaded) ? $loaded : [];
+    }
+    return $config;
+}
+
 function env_value(string $key, string $default = ''): string {
     $value = getenv($key);
-    return $value === false ? $default : $value;
+    if ($value !== false) {
+        return (string)$value;
+    }
+    $config = local_config();
+    if (array_key_exists($key, $config)) {
+        return (string)$config[$key];
+    }
+    return $default;
 }
 
 function h(string $value): string {
