@@ -1,6 +1,6 @@
 # Scenario roadmap (16 levels)
 
-These are the learning objectives. Do not mark a level complete until its route, expected behavior, reproducible test, and remediation are implemented and verified. Keep the intentionally vulnerable profile isolated and accessible only to authorized learners.
+These are the learning objectives. Milestone 1 has starter handlers for L01, L02, L03, and L04; L03 is intentionally a safe internal-only redirect simulation rather than a real external open redirect. Do not mark a level complete until its route, expected behavior, reproducible test, and remediation are implemented and verified. Keep the intentionally vulnerable profile isolated and accessible only to authorized learners.
 
 | Level | Topic | Safe test boundary | Fixed-version goal |
 |---|---|---|---|
