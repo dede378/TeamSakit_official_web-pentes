@@ -5,3 +5,6 @@
 *.log
 coverage/
 .phpunit.cache/
+
+# Local-only config for KSWEB; never commit credentials
+/app/config.local.php
