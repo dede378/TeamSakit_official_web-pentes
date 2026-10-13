@@ -1,6 +1,6 @@
 # Test plan
 
-Run tests only against the local Compose service with dummy data. The current milestone is a scaffold, so tests below are manual acceptance checks rather than an automated suite.
+Run tests only against the local Compose service with dummy data. Milestone 1 has starter handlers, but tests below are manual acceptance checks rather than an automated suite.
 
 ## Baseline
 - With `LAB_ENABLED=false`, requests to `/labs/` return 404.
