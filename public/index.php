@@ -3,8 +3,12 @@ declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-$isLab = str_starts_with($path, '/labs');
-if ($isLab) require_lab_access();
+$isLab = ($path === '/labs' || str_starts_with($path, '/labs/'));
+if ($isLab) {
+    require_lab_access();
+    require __DIR__ . '/../app/lab_router.php';
+    exit;
+}
 
 $articles = [];
 $article = null;
